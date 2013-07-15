@@ -59,7 +59,11 @@ var generateChoices = function (linePartial, callback) {
       throw err;
     }
 
-    if (stats && stats.isDirectory() && linePartial[linePartial.length - 1] !== '/') {
+    if (stats && stats.isDirectory() &&
+        linePartial !== '' &&
+        linePartial !== '.' &&
+        linePartial !== '..' &&
+        linePartial[linePartial.length - 1] !== '/') {
       pathToCheck = path.dirname(absolutePath);
     }
 
