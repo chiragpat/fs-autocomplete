@@ -1,0 +1,23 @@
+{
+  "name": "fs-autocomplete",
+  "version": "0.0.1",
+  "description": "FileSystem AutoCompleter for Node cli",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:chiragpat/fs-autocomplete.git"
+  },
+  "keywords": [
+    "autocomplete",
+    "cli",
+    "filesystem",
+    "fs",
+    "file",
+    "directory"
+  ],
+  "author": "chiragpat",
+  "license": "BSD"
+}
