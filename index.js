@@ -3,6 +3,8 @@ var readline = require('readline'),
     fs       = require('fs'),
     async    = require('async');
 
+var onlyDirectories = false;
+
 var generateisDirectoryCheckerFunction = function(baseDirectory, file) {
   return function(callback){
             fs.stat(baseDirectory + file, function(err, stats) {
@@ -59,7 +61,16 @@ var generateChoices = function (linePartial, callback) {
 
     if (!stats || stats.isDirectory()) {
       readdir(pathToCheck, function(err, filesAndDirectories) {
-        if (linePartial === '.') {
+        filterName = '';
+
+        if (linePartial === '.' || linePartial === '..') {
+          filterName = linePartial;
+        }
+        else if (pathToCheck !== absolutePath) {
+          filterName = path.basename(absolutePath);
+        }
+
+        if (linePartial === '' || linePartial === '.') {
           options.push('./');
           options.push('../');
         }
@@ -68,13 +79,18 @@ var generateChoices = function (linePartial, callback) {
         }
 
         for (var name in filesAndDirectories) {
-          if (filesAndDirectories[name]) {
+          var isDirectory = filesAndDirectories[name];
+          if (isDirectory) {
             name += '/';
           }
-
-          if (name.indexOf(linePartial) === 0) {
+          // console.log(name + (filterName === '' || name.indexOf(filterName) === 0));
+          if ((!onlyDirectories || isDirectory) && (filterName === '' || name.indexOf(filterName) === 0)) {
             options.push(name);
           }
+        }
+
+        if (options.length === 1 && linePartial.indexOf('/') !== -1) {
+          options[0] = linePartial.replace(/\/[^\/]*$/, '/' + options[0]);
         }
 
         callback(null, [options, linePartial]);
